@@ -1,13 +1,58 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webowe</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/date-fns@2.29.3/format/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/src/main.js"></script>
+</head>
+<body>  
+    <div class="container">
+        <h1>Artykuł</h1>
+        
+        <div class="sort-controls"> 
+            <label for="sort">Posortuj:</label>
+            <select id="sort">
+                <option value="created_at asc">Data ascending</option>
+                <option value="created_at desc">Data descending</option>
+                <option value="title asc">Tytuł</option>
+            </select>
+        </div>
+        
+        <div id="articles-list" class="articles-list"></div>
+        
+        <h2>Dodaj arykuł</h2>
+        <form id="article-form" class="article-form">
+            <div class="form-group">
+                <label for="title">Tytuł</label>
+                <input type="text" id="title" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="subtitle">Subtitle:</label>
+                <input type="text" id="subtitle" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="author">Autor:</label>
+                <input type="text" id="author" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="created_at">Data utworzenia:</label>
+                <input type="date" id="created_at" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="content">Treść</label>
+                <textarea id="content" rows="5" required></textarea>
+            </div>
+            
+            <button type="submit">Wyślij</button>
+        </form>
+    </div>
+</body>
 </html>
