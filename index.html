@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Webowe</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://unpkg.com/date-fns@2.29.3/format/index.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="/src/main.js"></script>
 </head>
 <body>  
     <div class="container">
@@ -16,7 +13,7 @@
         <div class="sort-controls"> 
             <label for="sort">Posortuj:</label>
             <select id="sort">
-                <option value="created_at asc">Data ascending</option>
+                <option value="created_at asc">Data rosnąco</option>
                 <option value="created_at desc">Data descending</option>
                 <option value="title asc">Tytuł</option>
             </select>
@@ -28,31 +25,32 @@
         <form id="article-form" class="article-form">
             <div class="form-group">
                 <label for="title">Tytuł</label>
-                <input type="text" id="title" required>
+                <input type="text" id="title">
             </div>
             
             <div class="form-group">
                 <label for="subtitle">Subtitle:</label>
-                <input type="text" id="subtitle" required>
+                <input type="text" id="subtitle" >
             </div>
             
             <div class="form-group">
                 <label for="author">Autor:</label>
-                <input type="text" id="author" required>
+                <input type="text" id="author">
             </div>
             
             <div class="form-group">
                 <label for="created_at">Data utworzenia:</label>
-                <input type="date" id="created_at" required>
+                <input type="date" id="created_at">
             </div>
             
             <div class="form-group">
                 <label for="content">Treść</label>
-                <textarea id="content" rows="5" required></textarea>
+                <textarea id="content" rows="5"></textarea>
             </div>
             
             <button type="submit">Wyślij</button>
         </form>
     </div>
+    <script type="module" src="src/main.js"></script>
 </body>
 </html>

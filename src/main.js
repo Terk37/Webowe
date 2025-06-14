@@ -1,78 +1,62 @@
-const
- { createClient } = 
-(
-'@supabase/supabase-js'
-);
-const
- supabaseUrl = 
-'https://emkwllpfraiskjblphts.supabase.co'
-;
-const
- supabaseAnonKey = 
-'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVta3dsbHBmcmFpc2tqYmxwaHRzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDgzNDg4ODEsImV4cCI6MjA2MzkyNDg4MX0.POZ5DMUgz-BIQy7f5WUnTTuu-3mevwLAzgQKTamfWBM'
-;
-const
- supabase = createClient(supabaseUrl, supabaseAnonKey);
+import { createClient } from '@supabase/supabase-js';
+import { format } from 'date-fns';
 
-// Verify connection immediately
-console.log("Supabase initialized:", supabase);
+const supabaseUrl = 'https://emkwllpfraiskjblphts.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVta3dsbHBmcmFpc2tqYmxwaHRzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDgzNDg4ODEsImV4cCI6MjA2MzkyNDg4MX0.POZ5DMUgz-BIQy7f5WUnTTuu-3mevwLAzgQKTamfWBM';
+const supabase = createClient(supabaseUrl, supabaseKey);
 
-// All other functions come AFTER initialization
-async function loadArticles() {
-    try {
-        const { data, error } = await supabase
-            .from('articles')
-            .select('*');
-            
-        if (error) throw error;
-        console.log("Articles loaded:", data);
-        displayArticles(data);
-    } catch (error) {
-        console.error("Load error:", error);
-        document.getElementById('articles-list').innerHTML = 
-            `<p class="error">Error loading articles: ${error.message}</p>`;
-    }
+
+async function displayArticles() {
+  const container = document.getElementById('articles-container');
+  const sortSelect = document.getElementById('sort-select');
+  const sortValue = sortSelect ? sortSelect.value : 'created_at.desc';
+  const [column, direction] = sortValue.split('.');
+
+  const { data: article } = await supabase
+    .from('article')
+    .select('title, subtitle, author, created_at, content')
+    .order(column, { ascending: direction === 'asc' });
+
+
+  let html = '';
+  article.forEach((item, i) => {
+    html += `<div class="article">
+      <h3>Artykuł ${i + 1}</h3>
+      <p>Tytuł: ${item.title}</p>
+      <p>Podtytuł: ${item.subtitle}</p>
+      <p>Autor: ${item.author}</p>
+      <p>Data utworzenia: ${format(new Date(item.created_at), 'dd-MM-yyyy')}</p>
+      <p>Treść:${item.content}</p>
+    </div>`;
+  });
+
+  container.innerHTML = html;
 }
 
-function displayArticles(articles) {
-    const container = document.getElementById('articles-list');
-    container.innerHTML = articles.map(article => `
-        <div class="article">
-            <h2>${article.title}</h2>
-            <h3>${article.subtitle}</h3>
-            <p class="meta">By ${article.author} • ${new Date(article.created_at).toLocaleDateString()}</p>
-            <p>${article.content}</p>
-        </div>
-    `).join('');
-}
-
-// Set up event listeners AFTER DOM loads
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("DOM loaded");
-    loadArticles();
-    
-    document.getElementById('article-form').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        const newArticle = {
-            title: e.target.title.value,
-            subtitle: e.target.subtitle.value,
-            author: e.target.author.value,
-            content: e.target.content.value,
-            created_at: new Date().toISOString()
-        };
-        
-        try {
-            const { error } = await supabase
-                .from('articles')
-                .insert([newArticle]);
-                
-            if (error) throw error;
-            e.target.reset();
-            loadArticles();
-        } catch (error) {
-            console.error("Submit error:", error);
-            alert(`Error submitting: ${error.message}`);
-        }
-    });
+  displayArticles();
+
+  const form = document.getElementById('article-form');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const title = form.title.value;
+    const subtitle = form.subtitle.value;
+    const author = form.author.value;
+    const content = form.content.value;
+    const createdAtRaw = form.created_at.value;
+    const created_at = new Date(createdAtRaw).toISOString(); // poprawny format daty
+
+    await supabase
+      .from('article')
+      .insert([{ title, subtitle, author, content, created_at }]);
+
+    form.reset();
+    displayArticles();
+  });
+
+  const sortSelect = document.getElementById('sort-select');
+  if (sortSelect) {
+    sortSelect.addEventListener('change', displayArticles);
+  }
 });
