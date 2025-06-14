@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Webowe</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="src/style.css">
+
 </head>
 <body>  
     <div class="container">
-        <h1>Artykuł</h1>
-        
+        <h1>Artykuły</h1>
         <div class="sort-controls"> 
             <label for="sort">Posortuj:</label>
             <select id="sort">
                 <option value="created_at asc">Data rosnąco</option>
-                <option value="created_at desc">Data descending</option>
+                <option value="created_at desc">Data malejąco</option>
                 <option value="title asc">Tytuł</option>
             </select>
         </div>
@@ -25,22 +25,21 @@
         <form id="article-form" class="article-form">
             <div class="form-group">
                 <label for="title">Tytuł</label>
-                <input type="text" id="title">
+                <input type="text" id="title" required>
             </div>
-            
             <div class="form-group">
-                <label for="subtitle">Subtitle:</label>
-                <input type="text" id="subtitle" >
+                <label for="subtitle">Podtytuł</label>
+                <input type="text" id="subtitle" required >
             </div>
             
             <div class="form-group">
                 <label for="author">Autor:</label>
-                <input type="text" id="author">
+                <input type="text" id="author" required>
             </div>
             
             <div class="form-group">
                 <label for="created_at">Data utworzenia:</label>
-                <input type="date" id="created_at">
+                <input type="date" id="created_at" required>
             </div>
             
             <div class="form-group">

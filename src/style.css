@@ -1,5 +1,15 @@
-@import "tailwindcss";
+body {
+  font-family: Arial;
+  padding: 10px;
+}
 
-@theme {
-    --color-primary: #700b70; 
+h1 {
+  color: #0066cc;
+  
+  padding-bottom: 5px;
+}
+
+select {
+  padding: 3px;
+  margin-bottom: 20px;
 }
